@@ -6,7 +6,7 @@
     "start_timestamp_ms": 1753214897920,
     "end_timestamp_ms": 1753214906403,
     "task_name": "20250722160826",
-    "description": "Automatically recorded task 20250722160826",
+    "description": "wave hand while gripping the lego piece",
     "objects_involved": [
       "robot_arm"
     ],
