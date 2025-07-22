@@ -72,8 +72,8 @@ def connect_robot():
 
 def generate_task_name():
     """Generate a task name with timestamp"""
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    return f"task_{timestamp}"
+    timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+    return timestamp
 
 def save_current_trace():
     """Save the current trace to file"""
