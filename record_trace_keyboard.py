@@ -13,7 +13,9 @@ import threading
 import requests
 from datetime import datetime
 import os
-from pynput import keyboard
+import select
+import termios
+import tty
 
 # Configuration
 DEVICE_PORT = '/dev/ttyACM0'  # Change this to your device path
@@ -226,38 +228,48 @@ def stop_recording_and_save():
     # Save the trace
     save_current_trace()
 
-def on_key_press(key):
-    """Handle key press events"""
+def get_char():
+    """Get a single character from stdin without pressing enter"""
+    fd = sys.stdin.fileno()
+    old_settings = termios.tcgetattr(fd)
     try:
-        if hasattr(key, 'char') and key.char == 'p':
-            print("\n'p' pressed - Starting new trace...")
-            start_new_trace()
-        elif hasattr(key, 'char') and key.char == 's':
-            print("\n's' pressed - Stopping and saving current trace...")
+        tty.setraw(sys.stdin.fileno())
+        char = sys.stdin.read(1)
+    finally:
+        termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+    return char
+
+def handle_key_input(char):
+    """Handle key input from terminal"""
+    global current_gripper_value
+    
+    if char == 'p':
+        print("\n'p' pressed - Starting new trace...")
+        start_new_trace()
+    elif char == 's':
+        print("\n's' pressed - Stopping and saving current trace...")
+        stop_recording_and_save()
+    elif char == 'q' or char == '\x1b':  # 'q' or ESC
+        print("\nExiting...")
+        if recording:
             stop_recording_and_save()
-        elif hasattr(key, 'char') and key.char == 'q':
-            print("\n'q' pressed - Exiting...")
-            if recording:
-                stop_recording_and_save()
-            return False  # Stop listener
-        elif hasattr(key, 'char') and key.char and key.char.isdigit():
-            # Set gripper value with number keys (0-9 maps to 0-90)
-            global current_gripper_value
-            gripper_value = int(key.char) * 10
-            if gripper_value <= 100:
-                try:
-                    mc.set_gripper_value(gripper_value, 50)
-                    current_gripper_value = gripper_value
-                    print(f"\nGripper set to {gripper_value}")
-                except Exception as e:
-                    print(f"\nError setting gripper: {e}")
-    except AttributeError:
-        # Special keys (like ctrl, alt, etc.)
-        if key == keyboard.Key.esc:
-            print("\nEscape pressed - Exiting...")
-            if recording:
-                stop_recording_and_save()
-            return False  # Stop listener
+        return False  # Exit
+    elif char.isdigit():
+        # Set gripper value with number keys (0-9 maps to 0-90)
+        gripper_value = int(char) * 10
+        if gripper_value <= 100:
+            try:
+                mc.set_gripper_value(gripper_value, 50)
+                current_gripper_value = gripper_value
+                print(f"\nGripper set to {gripper_value}")
+            except Exception as e:
+                print(f"\nError setting gripper: {e}")
+    elif char == '\x03':  # Ctrl+C
+        print("\nCtrl+C pressed - Exiting...")
+        if recording:
+            stop_recording_and_save()
+        return False
+    return True
 
 def main():
     global mc
@@ -268,7 +280,7 @@ def main():
     print("  's' - Stop and save current trace")
     print("  'q' - Quit (auto-saves current trace)")
     print("  '0'-'9' - Set gripper value (0=0%, 1=10%, ..., 9=90%)")
-    print("  ESC - Quit")
+    print("  ESC or Ctrl+C - Quit")
     print()
     
     # Connect to robot
@@ -285,17 +297,22 @@ def main():
         return
 
     print("\nReady! Press 'p' to start recording...")
+    print("Press any key (no need to press Enter):")
     
-    # Start keyboard listener
+    # Terminal input loop
     try:
-        with keyboard.Listener(on_press=on_key_press) as listener:
-            listener.join()
+        while True:
+            char = get_char()
+            if not handle_key_input(char):
+                break
     except KeyboardInterrupt:
         print("\nInterrupted by user.")
+        if recording:
+            stop_recording_and_save()
     except Exception as e:
-        print(f"Error with keyboard listener: {e}")
+        print(f"Error with input handling: {e}")
     
-    # Cleanup - save any ongoing recording
+    # Final cleanup - save any ongoing recording
     if recording:
         print("Saving final trace...")
         stop_recording_and_save()
