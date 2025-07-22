@@ -69,9 +69,17 @@ def get_task_metadata():
     """
     print("\n=== Task Information ===")
     task_name = input("Task name (e.g., 'pick_and_place_red_block'): ").strip()
-    description = input("Task description: ").strip()
-    objects_involved = input("Objects involved (comma-separated): ").strip()
-    expected_duration = input("Expected duration (seconds): ").strip()
+    
+    # Auto-populate description and objects_involved with task_name
+    print(f"Task description: {task_name} (auto-filled)")
+    description = task_name
+    
+    print(f"Objects involved (comma-separated): {task_name} (auto-filled)")
+    objects_involved = task_name
+    
+    # Auto-populate expected_duration with 10 seconds
+    print("Expected duration (seconds): 10 (auto-filled)")
+    expected_duration = "10"
 
     return {
         "task_name": task_name,
