@@ -25,11 +25,11 @@ for i, episode in enumerate(ds.take(1)):
         
         # Show actual state values
         state = step['observation']['state'].numpy()
-        print(f"    State (joints[rad], xyz[mm], rpy[rad], gripper): {state}")
+        print(f"    State (xyz[mm], rpy[rad], gripper): {state}")
         
         # Show action values
         action = step['action'].numpy()
-        print(f"    Action (joint_deltas, xyz_deltas, rpy_deltas, gripper): {action}")
+        print(f"    Action (xyz_deltas, rpy_deltas, gripper): {action}")
         
         print(f"    Language instruction: {step['language_instruction'].numpy().decode()}")
         print(f"    Reward: {step['reward'].numpy()}")

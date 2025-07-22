@@ -48,12 +48,14 @@ class RDLSDatasetConverter(tfds.core.GeneratorBasedBuilder):
                             encoding_format='png'
                         ),
                         'state': tfds.features.Tensor(
-                            shape=(13,),  # 6 joint angles + 6 cartesian coords (xyz + rpy) + gripper
+                            shape=(7,),  # 6 cartesian coords (xyz + rpy) + gripper (angles excluded)
+                            # shape=(13,),  # 6 joint angles + 6 cartesian coords (xyz + rpy) + gripper
                             dtype=np.float32
                         ),
                     }),
                     'action': tfds.features.Tensor(
-                        shape=(13,),  # 6 joint deltas + 6 cartesian deltas + gripper
+                        shape=(7,),  # 6 cartesian deltas + gripper (joint deltas excluded)
+                        # shape=(13,),  # 6 joint deltas + 6 cartesian deltas + gripper
                         dtype=np.float32
                     ),
                     'language_instruction': tfds.features.Text(),
@@ -113,39 +115,42 @@ class RDLSDatasetConverter(tfds.core.GeneratorBasedBuilder):
             
             for step_idx, step in enumerate(trace):
                 # Skip entries with missing data
-                angles = step['angles']
+                # ANGLES PROCESSING COMMENTED OUT - can be re-enabled later
+                # angles = step['angles']
                 coords = step.get('coords', [])
-                if not isinstance(angles, list) or len(angles) != 6:
-                    print(f"Skipping malformed step {step_idx}: angles = {angles}")
-                    continue
+                # if not isinstance(angles, list) or len(angles) != 6:
+                #     print(f"Skipping malformed step {step_idx}: angles = {angles}")
+                #     continue
                 if not isinstance(coords, list) or len(coords) != 6:
                     print(f"Skipping step {step_idx}: missing or invalid coords = {coords}")
                     continue
                 
-                # Convert joint angles from degrees to radians
-                joints = np.array(angles, dtype=np.float32) * np.pi / 180.0
+                # Convert joint angles from degrees to radians - COMMENTED OUT
+                # joints = np.array(angles, dtype=np.float32) * np.pi / 180.0
                 
                 # Process Cartesian coordinates (XYZ in mm, RPY in degrees)
                 xyz_pos = np.array(coords[:3], dtype=np.float32)  # mm
                 rpy_orient = np.array(coords[3:], dtype=np.float32) * np.pi / 180.0  # convert to radians
                 
-                # Combined state: [joint_angles(6), xyz_pos(3), rpy_orient(3), gripper(1)]
+                # Combined state: [xyz_pos(3), rpy_orient(3), gripper(1)] - angles excluded
+                # Old state with angles: [joint_angles(6), xyz_pos(3), rpy_orient(3), gripper(1)]
                 gripper_state = np.array([float(step['gripper_value'])], dtype=np.float32)
-                state = np.concatenate([joints, xyz_pos, rpy_orient, gripper_state])
+                state = np.concatenate([xyz_pos, rpy_orient, gripper_state])
+                # state = np.concatenate([joints, xyz_pos, rpy_orient, gripper_state])  # WITH ANGLES
                 
-                # Calculate actions (deltas for both joint and cartesian)
-                joint_deltas = np.zeros(6, dtype=np.float32)
+                # Calculate actions (cartesian deltas only - joint deltas excluded)
+                # joint_deltas = np.zeros(6, dtype=np.float32)  # COMMENTED OUT
                 cartesian_deltas = np.zeros(6, dtype=np.float32)
                 
                 if step_idx < len(trace) - 1:
                     next_step = trace[step_idx + 1]
-                    next_angles = next_step.get('angles', [])
+                    # next_angles = next_step.get('angles', [])  # COMMENTED OUT
                     next_coords = next_step.get('coords', [])
                     
-                    # Joint deltas
-                    if isinstance(next_angles, list) and len(next_angles) == 6:
-                        next_joints = np.array(next_angles, dtype=np.float32) * np.pi / 180.0
-                        joint_deltas = next_joints - joints
+                    # Joint deltas - COMMENTED OUT
+                    # if isinstance(next_angles, list) and len(next_angles) == 6:
+                    #     next_joints = np.array(next_angles, dtype=np.float32) * np.pi / 180.0
+                    #     joint_deltas = next_joints - joints
                     
                     # Cartesian deltas  
                     if isinstance(next_coords, list) and len(next_coords) == 6:
@@ -158,8 +163,10 @@ class RDLSDatasetConverter(tfds.core.GeneratorBasedBuilder):
                 # Add gripper action 
                 gripper_action = np.array([float(step['gripper_value'])], dtype=np.float32)
                 
-                # Combined action: [joint_deltas(6), cartesian_deltas(6), gripper(1)]
-                action = np.concatenate([joint_deltas, cartesian_deltas, gripper_action])
+                # Combined action: [cartesian_deltas(6), gripper(1)] - joint deltas excluded
+                # Old action with joints: [joint_deltas(6), cartesian_deltas(6), gripper(1)]
+                action = np.concatenate([cartesian_deltas, gripper_action])
+                # action = np.concatenate([joint_deltas, cartesian_deltas, gripper_action])  # WITH JOINTS
                 
                 # Load actual image if available
                 image_array = self._load_image_for_step(json_file, step, valid_step_idx)
@@ -174,7 +181,7 @@ class RDLSDatasetConverter(tfds.core.GeneratorBasedBuilder):
                 step_data = {
                     'observation': {
                         'image': image_array,
-                        'state': state,  # Now includes joints + cartesian coords + gripper
+                        'state': state,  # Now includes cartesian coords + gripper (joints excluded)
                     },
                     'action': action,
                     'language_instruction': metadata.get('description', 'Robot manipulation task'),
