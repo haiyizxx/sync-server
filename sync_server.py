@@ -75,9 +75,14 @@ def upload_image():
 
     # Save image with a unique filename (remove periods from timestamp)
     clean_timestamp = timestamp.replace('.', '')
-    filename = f"{command_id}_{clean_timestamp}.jpg"
+    filename = f"{clean_timestamp}.jpg"
     filepath = os.path.join(task_dir, filename)
     image.save(filepath)
+
+    # Also save as latest.jpg in the main images folder
+    latest_filepath = os.path.join(BASE_IMAGE_DIR, "latest.jpg")
+    image.seek(0)  # Reset file pointer to beginning
+    image.save(latest_filepath)
 
     # Save metadata
     meta = {
@@ -88,6 +93,10 @@ def upload_image():
         'task_dir': task_dir
     }
     with open(os.path.join(task_dir, filename + ".json"), "w") as f:
+        json.dump(meta, f)
+
+    # Also save latest metadata
+    with open(os.path.join(BASE_IMAGE_DIR, "latest.jpg.json"), "w") as f:
         json.dump(meta, f)
 
     return jsonify({'status': 'success', 'filename': filename, 'task_dir': task_dir})
@@ -178,34 +187,22 @@ def get_latest_image():
     Get the most recently uploaded image
     """
     try:
-        # Get all jpg files from all task directories
-        files_with_time = []
-        for root, dirs, files in os.walk(BASE_IMAGE_DIR):
-            for f in files:
-                if f.endswith('.jpg'):
-                    filepath = os.path.join(root, f)
-                    mod_time = os.path.getmtime(filepath)
-                    relative_path = os.path.relpath(filepath, BASE_IMAGE_DIR)
-                    files_with_time.append((f, relative_path, filepath, mod_time))
+        # Check if we have a latest.jpg file
+        latest_filepath = os.path.join(BASE_IMAGE_DIR, "latest.jpg")
+        latest_meta_filepath = os.path.join(BASE_IMAGE_DIR, "latest.jpg.json")
         
-        if not files_with_time:
-            return jsonify({'status': 'error', 'message': 'No images found'}), 404
+        if not os.path.exists(latest_filepath):
+            return jsonify({'status': 'error', 'message': 'No latest image found'}), 404
         
-        # Get the most recent file
-        latest_info = max(files_with_time, key=lambda x: x[3])
-        latest_file, latest_relative_path, latest_full_path, _ = latest_info
-        
-        # Get metadata if available
-        meta_file = latest_full_path + ".json"
         metadata = {}
-        if os.path.exists(meta_file):
-            with open(meta_file) as mf:
+        if os.path.exists(latest_meta_filepath):
+            with open(latest_meta_filepath) as mf:
                 metadata = json.load(mf)
         
         return jsonify({
             'status': 'success',
-            'filename': latest_file,
-            'relative_path': latest_relative_path,
+            'filename': 'latest.jpg',
+            'relative_path': 'latest.jpg',
             'metadata': metadata
         })
         
@@ -218,24 +215,13 @@ def get_latest_image_file():
     Download the most recently uploaded image file
     """
     try:
-        # Get all jpg files from all task directories
-        files_with_time = []
-        for root, dirs, files in os.walk(BASE_IMAGE_DIR):
-            for f in files:
-                if f.endswith('.jpg'):
-                    filepath = os.path.join(root, f)
-                    mod_time = os.path.getmtime(filepath)
-                    files_with_time.append((f, filepath, root, mod_time))
+        # Check if we have a latest.jpg file
+        latest_filepath = os.path.join(BASE_IMAGE_DIR, "latest.jpg")
         
-        if not files_with_time:
-            return jsonify({'status': 'error', 'message': 'No images found'}), 404
-        
-        # Get the most recent file
-        latest_info = max(files_with_time, key=lambda x: x[3])
-        latest_file, latest_full_path, latest_dir, _ = latest_info
-        
-        # Return the actual image file
-        return send_from_directory(latest_dir, latest_file)
+        if not os.path.exists(latest_filepath):
+            return jsonify({'status': 'error', 'message': 'No latest image found'}), 404
+            
+        return send_from_directory(BASE_IMAGE_DIR, "latest.jpg")
         
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
