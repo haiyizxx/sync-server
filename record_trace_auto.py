@@ -31,14 +31,14 @@ def send_sync_command(command, task_name=""):
     """Send command to sync server"""
     if not ENABLE_SYNC:
         return
-    
+
     try:
         data = {
             'command': command,
             'task_name': task_name
         }
-        response = requests.post(f"{SYNC_SERVER_URL}/command", 
-                               json=data, 
+        response = requests.post(f"{SYNC_SERVER_URL}/command",
+                               json=data,
                                timeout=1.0)
         if response.status_code == 200:
             print(f"✓ Sync command '{command}' sent to server")
@@ -71,7 +71,7 @@ def get_task_metadata():
     description = input("Task description: ").strip()
     objects_involved = input("Objects involved (comma-separated): ").strip()
     expected_duration = input("Expected duration (seconds): ").strip()
-    
+
     return {
         "task_name": task_name,
         "description": description,
@@ -88,23 +88,23 @@ def continuous_recording(mc, trace, start_time):
     """
     global recording, current_gripper_value
     recording = True
-    
+
     recording_count = 0
-    
+
     while recording:
         try:
             # Get current joint angles
             angles = mc.get_angles()
             coords = mc.get_coords()  # End-effector coordinates [x, y, z, rx, ry, rz]
-            
+
             if angles is not None:
                 # Calculate timestamp relative to start
                 relative_timestamp = time.time() - start_time
                 unix_timestamp = time.time()  # Unix timestamp with millisecond precision
-                
+
                 # Use the current gripper value (set by user)
                 gripper_value = current_gripper_value
-                
+
                 # Get additional robot state information
                 robot_state = {
                     "relative_timestamp": relative_timestamp,
@@ -115,22 +115,22 @@ def continuous_recording(mc, trace, start_time):
                     "is_moving": mc.is_moving() if hasattr(mc, 'is_moving') else False,
                     "is_powered_on": mc.is_powered_on() if hasattr(mc, 'is_powered_on') else True,
                 }
-                
+
                 # Add to trace
                 trace.append(robot_state)
                 recording_count += 1
-                
+
                 # Print progress every 50 recordings with gripper info
                 if recording_count % 50 == 0:
                     print(f"Recorded {recording_count} points... gripper: {gripper_value}")
-                    
+
             # Wait for next recording interval
             time.sleep(RECORDING_INTERVAL)
-            
+
         except Exception as e:
             print(f"Recording error: {e}")
             break
-    
+
     print(f"Recording thread stopped. Total recorded: {recording_count}")
 
 def record_movement_trace(mc):
@@ -145,61 +145,61 @@ def record_movement_trace(mc):
     print(f"  <quit>  - Exit without saving")
     print(f"  <status> - Show current joint angles and gripper value")
     print(f"  gripper <value> - Set gripper to value (0-100) and update the value for trace")
-    
+
     trace = []
     recording = False
     start_time = None
     task_metadata = None
-    
+
     while True:
         try:
             command = input("Enter command: ").strip().lower()
-            
+
             if command == "start":
                 if recording:
                     print("Already recording!")
                     continue
-                
+
                 # Get task metadata before starting
                 if task_metadata is None:
                     task_metadata = get_task_metadata()
-                    
+
                 recording = True
                 start_time = time.time()
                 print(f"Recording started at {RECORDING_FREQUENCY}Hz...")
                 print("Control the robot with another script. Type 'end' to stop recording.")
-                
+
                 # Send start command to sync server
                 send_sync_command("start", task_metadata.get("task_name", ""))
-                
+
                 # Start recording in a separate thread
                 recording_thread = threading.Thread(
-                    target=continuous_recording, 
+                    target=continuous_recording,
                     args=(mc, trace, start_time)
                 )
                 recording_thread.daemon = True
                 recording_thread.start()
-                
+
             elif command == "end":
                 if not recording:
                     print("Not currently recording!")
                     continue
-                    
+
                 recording = False
                 print("Recording stopped.")
                 print(f"Recorded {len(trace)} data points.")
-                
+
                 # Send end command to sync server
                 send_sync_command("end", task_metadata.get("task_name", "") if task_metadata else "")
-                
+
                 # Ask for success evaluation
                 success = input("Did the task complete successfully? (y/n): ").strip().lower()
                 success_bool = success in ['y', 'yes', 'true', '1']
-                
+
                 # Save the trace
                 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
                 filename = f"joint_trace_{timestamp}.json"
-                
+
                 trace_data = {
                     "metadata": {
                         "recording_frequency_hz": RECORDING_FREQUENCY,
@@ -211,19 +211,19 @@ def record_movement_trace(mc):
                     },
                     "trace": trace
                 }
-                
+
                 with open(filename, "w") as f:
                     json.dump(trace_data, f, indent=2)
                 print(f"Trace saved to {filename}")
-                
+
                 # Clear trace for next recording
                 trace.clear()
                 task_metadata = None  # Reset for next task
-                
+
             elif command == "quit":
                 print("Exiting...")
                 break
-                
+
             elif command == "status":
                 try:
                     angles = mc.get_angles()
@@ -233,7 +233,7 @@ def record_movement_trace(mc):
                     print(f"Current gripper value (for trace): {current_gripper_value}")
                 except Exception as e:
                     print(f"Failed to get status: {e}")
-            
+
             elif command.startswith("gripper "):
                 try:
                     value = int(command.split()[1])
@@ -245,10 +245,10 @@ def record_movement_trace(mc):
                         print("Value must be between 0 and 100.")
                 except Exception as e:
                     print(f"Error setting gripper value: {e}")
-            
+
             else:
                 print("Unknown command. Use: start, end, quit, status, or gripper <value>")
-                
+
         except KeyboardInterrupt:
             print("\nInterrupted by user. Exiting...")
             break
@@ -260,11 +260,11 @@ def main():
     mc = connect_robot()
     if mc is None:
         return
-    
+
     # Note: Robot is NOT put in free mode - it can be controlled by other scripts
     print("✓ Robot connected and ready for recording")
     print("⚠️  Robot is NOT in free mode - control it with another script")
-    
+
     # Start recording interface
     record_movement_trace(mc)
 
