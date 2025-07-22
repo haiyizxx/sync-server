@@ -102,7 +102,7 @@
       "gripper_value": 0,
       "is_moving": 0,
       "is_powered_on": true,
-      "image": null
+      "image": "28_1753206363929.jpg"
     },
     {
       "timestamp_ms": 1753206364117,
@@ -126,7 +126,7 @@
       "gripper_value": 0,
       "is_moving": 0,
       "is_powered_on": true,
-      "image": null
+      "image": "28_1753206363929.jpg"
     },
     {
       "timestamp_ms": 1753206364472,
@@ -150,7 +150,7 @@
       "gripper_value": 0,
       "is_moving": 0,
       "is_powered_on": true,
-      "image": null
+      "image": "28_1753206364425.jpg"
     },
     {
       "timestamp_ms": 1753206364826,
@@ -174,7 +174,7 @@
       "gripper_value": 0,
       "is_moving": 0,
       "is_powered_on": true,
-      "image": null
+      "image": "28_1753206364954.jpg"
     },
     {
       "timestamp_ms": 1753206365179,
@@ -198,7 +198,7 @@
       "gripper_value": 0,
       "is_moving": 0,
       "is_powered_on": true,
-      "image": null
+      "image": "28_1753206364954.jpg"
     },
     {
       "timestamp_ms": 1753206365533,
@@ -222,7 +222,7 @@
       "gripper_value": 0,
       "is_moving": 0,
       "is_powered_on": true,
-      "image": null
+      "image": "28_1753206365502.jpg"
     },
     {
       "timestamp_ms": 1753206365888,
@@ -246,7 +246,7 @@
       "gripper_value": 0,
       "is_moving": 0,
       "is_powered_on": true,
-      "image": null
+      "image": "28_1753206366043.jpg"
     },
     {
       "timestamp_ms": 1753206366242,
@@ -270,7 +270,7 @@
       "gripper_value": 0,
       "is_moving": 0,
       "is_powered_on": true,
-      "image": null
+      "image": "28_1753206366043.jpg"
     },
     {
       "timestamp_ms": 1753206366595,
@@ -294,7 +294,7 @@
       "gripper_value": 0,
       "is_moving": 0,
       "is_powered_on": true,
-      "image": null
+      "image": "28_1753206366579.jpg"
     },
     {
       "timestamp_ms": 1753206366949,
@@ -318,7 +318,7 @@
       "gripper_value": 0,
       "is_moving": 0,
       "is_powered_on": true,
-      "image": null
+      "image": "28_1753206367125.jpg"
     },
     {
       "timestamp_ms": 1753206367302,
@@ -342,7 +342,7 @@
       "gripper_value": 0,
       "is_moving": 0,
       "is_powered_on": true,
-      "image": null
+      "image": "28_1753206367125.jpg"
     },
     {
       "timestamp_ms": 1753206367656,
@@ -366,7 +366,7 @@
       "gripper_value": 30,
       "is_moving": 0,
       "is_powered_on": true,
-      "image": null
+      "image": "28_1753206367639.jpg"
     },
     {
       "timestamp_ms": 1753206368010,
@@ -390,7 +390,7 @@
       "gripper_value": 30,
       "is_moving": 0,
       "is_powered_on": true,
-      "image": null
+      "image": "28_1753206368142.jpg"
     },
     {
       "timestamp_ms": 1753206368363,
@@ -414,7 +414,7 @@
       "gripper_value": 30,
       "is_moving": 0,
       "is_powered_on": true,
-      "image": null
+      "image": "28_1753206368142.jpg"
     },
     {
       "timestamp_ms": 1753206368717,
@@ -438,7 +438,7 @@
       "gripper_value": 30,
       "is_moving": 0,
       "is_powered_on": true,
-      "image": null
+      "image": "28_1753206368680.jpg"
     },
     {
       "timestamp_ms": 1753206369071,
@@ -462,7 +462,7 @@
       "gripper_value": 30,
       "is_moving": 0,
       "is_powered_on": true,
-      "image": null
+      "image": "28_1753206369174.jpg"
     },
     {
       "timestamp_ms": 1753206369425,
@@ -486,7 +486,7 @@
       "gripper_value": 30,
       "is_moving": 0,
       "is_powered_on": true,
-      "image": null
+      "image": "28_1753206369174.jpg"
     },
     {
       "timestamp_ms": 1753206369780,
@@ -510,7 +510,7 @@
       "gripper_value": 30,
       "is_moving": 0,
       "is_powered_on": true,
-      "image": null
+      "image": "28_1753206369691.jpg"
     },
     {
       "timestamp_ms": 1753206370134,
@@ -534,7 +534,7 @@
       "gripper_value": 30,
       "is_moving": 0,
       "is_powered_on": true,
-      "image": null
+      "image": "28_1753206370238.jpg"
     },
     {
       "timestamp_ms": 1753206370488,
@@ -558,7 +558,7 @@
       "gripper_value": 30,
       "is_moving": 0,
       "is_powered_on": true,
-      "image": null
+      "image": "28_1753206370238.jpg"
     },
     {
       "timestamp_ms": 1753206370841,
@@ -582,7 +582,7 @@
       "gripper_value": 30,
       "is_moving": 0,
       "is_powered_on": true,
-      "image": null
+      "image": "28_1753206370777.jpg"
     },
     {
       "timestamp_ms": 1753206371197,
@@ -606,7 +606,7 @@
       "gripper_value": 30,
       "is_moving": 0,
       "is_powered_on": true,
-      "image": null
+      "image": "28_1753206371278.jpg"
     },
     {
       "timestamp_ms": 1753206371550,
@@ -630,7 +630,7 @@
       "gripper_value": 30,
       "is_moving": 0,
       "is_powered_on": true,
-      "image": null
+      "image": "28_1753206371793.jpg"
     },
     {
       "timestamp_ms": 1753206371904,
@@ -654,7 +654,7 @@
       "gripper_value": 30,
       "is_moving": 0,
       "is_powered_on": true,
-      "image": null
+      "image": "28_1753206371793.jpg"
     },
     {
       "timestamp_ms": 1753206372257,
@@ -678,7 +678,7 @@
       "gripper_value": 30,
       "is_moving": 0,
       "is_powered_on": true,
-      "image": null
+      "image": "28_1753206372321.jpg"
     },
     {
       "timestamp_ms": 1753206372611,
@@ -702,7 +702,7 @@
       "gripper_value": 30,
       "is_moving": 0,
       "is_powered_on": true,
-      "image": null
+      "image": "28_1753206372806.jpg"
     },
     {
       "timestamp_ms": 1753206372965,
@@ -726,7 +726,7 @@
       "gripper_value": 100,
       "is_moving": 0,
       "is_powered_on": true,
-      "image": null
+      "image": "28_1753206372806.jpg"
     },
     {
       "timestamp_ms": 1753206373319,
@@ -750,7 +750,7 @@
       "gripper_value": 100,
       "is_moving": 0,
       "is_powered_on": true,
-      "image": null
+      "image": "28_1753206373272.jpg"
     },
     {
       "timestamp_ms": 1753206373674,
@@ -774,7 +774,7 @@
       "gripper_value": 100,
       "is_moving": 0,
       "is_powered_on": true,
-      "image": null
+      "image": "28_1753206373780.jpg"
     },
     {
       "timestamp_ms": 1753206374029,
@@ -798,7 +798,7 @@
       "gripper_value": 100,
       "is_moving": 0,
       "is_powered_on": true,
-      "image": null
+      "image": "28_1753206373780.jpg"
     },
     {
       "timestamp_ms": 1753206374384,
@@ -822,7 +822,7 @@
       "gripper_value": 100,
       "is_moving": 0,
       "is_powered_on": true,
-      "image": null
+      "image": "28_1753206374298.jpg"
     },
     {
       "timestamp_ms": 1753206374737,
@@ -846,7 +846,7 @@
       "gripper_value": 100,
       "is_moving": 0,
       "is_powered_on": true,
-      "image": null
+      "image": "28_1753206374837.jpg"
     },
     {
       "timestamp_ms": 1753206375092,
@@ -870,7 +870,7 @@
       "gripper_value": 100,
       "is_moving": 0,
       "is_powered_on": true,
-      "image": null
+      "image": "28_1753206374837.jpg"
     },
     {
       "timestamp_ms": 1753206375445,
@@ -894,7 +894,7 @@
       "gripper_value": 100,
       "is_moving": 0,
       "is_powered_on": true,
-      "image": null
+      "image": "28_1753206375352.jpg"
     },
     {
       "timestamp_ms": 1753206375799,
@@ -918,7 +918,7 @@
       "gripper_value": 100,
       "is_moving": 0,
       "is_powered_on": true,
-      "image": null
+      "image": "28_1753206375865.jpg"
     },
     {
       "timestamp_ms": 1753206376152,
@@ -942,7 +942,7 @@
       "gripper_value": 100,
       "is_moving": 0,
       "is_powered_on": true,
-      "image": null
+      "image": "28_1753206376383.jpg"
     },
     {
       "timestamp_ms": 1753206376508,
@@ -966,7 +966,7 @@
       "gripper_value": 100,
       "is_moving": 0,
       "is_powered_on": true,
-      "image": null
+      "image": "28_1753206376383.jpg"
     },
     {
       "timestamp_ms": 1753206376862,
@@ -990,7 +990,7 @@
       "gripper_value": 100,
       "is_moving": 0,
       "is_powered_on": true,
-      "image": null
+      "image": "28_1753206376867.jpg"
     },
     {
       "timestamp_ms": 1753206377215,
@@ -1014,7 +1014,7 @@
       "gripper_value": 100,
       "is_moving": 0,
       "is_powered_on": true,
-      "image": null
+      "image": "29_1753206377450.jpg"
     },
     {
       "timestamp_ms": 1753206377569,
@@ -1038,7 +1038,7 @@
       "gripper_value": 100,
       "is_moving": 0,
       "is_powered_on": true,
-      "image": null
+      "image": "29_1753206377450.jpg"
     },
     {
       "timestamp_ms": 1753206377923,
@@ -1062,7 +1062,7 @@
       "gripper_value": 100,
       "is_moving": 0,
       "is_powered_on": true,
-      "image": null
+      "image": "29_1753206377450.jpg"
     }
   ]
 }
