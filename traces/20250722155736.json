@@ -1,0 +1,91 @@
+{
+  "metadata": {
+    "recording_frequency_hz": 5,
+    "total_points": 3,
+    "duration_seconds": 1.0679543018341064,
+    "start_timestamp_ms": 1753214255518,
+    "end_timestamp_ms": 1753214256586,
+    "task_name": "20250722155736",
+    "description": "Automatically recorded task 20250722155736",
+    "objects_involved": [
+      "robot_arm"
+    ],
+    "robot_model": "myCobot 280",
+    "task_success": true,
+    "recording_mode": "keyboard_controlled"
+  },
+  "trace": [
+    {
+      "timestamp_ms": 1753214255627,
+      "relative_timestamp": 0.10910725593566895,
+      "angles": [
+        95.36,
+        -104.76,
+        -24.87,
+        -4.57,
+        -88.15,
+        24.69
+      ],
+      "coords": [
+        86.6,
+        242.6,
+        -3.3,
+        93.95,
+        -70.43,
+        90.34
+      ],
+      "gripper_value": 20,
+      "is_moving": 0,
+      "is_powered_on": true,
+      "image": null
+    },
+    {
+      "timestamp_ms": 1753214255981,
+      "relative_timestamp": 0.46303772926330566,
+      "angles": [
+        88.24,
+        -104.85,
+        -24.87,
+        -5.09,
+        -87.97,
+        24.69
+      ],
+      "coords": [
+        131.9,
+        220.2,
+        -4.4,
+        94.1,
+        -69.63,
+        78.91
+      ],
+      "gripper_value": 20,
+      "is_moving": 0,
+      "is_powered_on": true,
+      "image": null
+    },
+    {
+      "timestamp_ms": 1753214256334,
+      "relative_timestamp": 0.816148042678833,
+      "angles": [
+        73.65,
+        -104.58,
+        -24.87,
+        -5.8,
+        -88.15,
+        24.69
+      ],
+      "coords": [
+        170.1,
+        192.8,
+        -3.5,
+        93.73,
+        -69.55,
+        68.84
+      ],
+      "gripper_value": 20,
+      "is_moving": 0,
+      "is_powered_on": true,
+      "image": null
+    }
+  ]
+}
