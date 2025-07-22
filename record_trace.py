@@ -17,8 +17,8 @@ from flask import send_from_directory, request
 # Configuration
 DEVICE_PORT = '/dev/ttyACM0'  # Change this to your device path
 BAUD_RATE = 115200
-RECORDING_FREQUENCY = 20  # Hz (20 times per second)
-RECORDING_INTERVAL = 0.05  # Seconds between recordings (0.05 seconds = 50ms)
+RECORDING_FREQUENCY = 5  # Hz (20 times per second)
+RECORDING_INTERVAL = 0.2  # Seconds between recordings (0.2 seconds = 200ms)
 
 # Sync server configuration
 SYNC_SERVER_URL = "http://localhost:5512"  # Change to your server IP
