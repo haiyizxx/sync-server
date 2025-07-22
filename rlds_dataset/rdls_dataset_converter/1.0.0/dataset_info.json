@@ -16,9 +16,12 @@
     {
       "filepathTemplate": "{DATASET}-{SPLIT}.{FILEFORMAT}-{SHARD_X_OF_Y}",
       "name": "train",
-      "numBytes": "23018231",
+      "numBytes": "306602724",
       "shardLengths": [
-        "10"
+        "22",
+        "23",
+        "23",
+        "22"
       ]
     }
   ],

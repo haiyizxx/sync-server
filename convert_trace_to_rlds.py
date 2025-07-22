@@ -6,15 +6,21 @@ Loads traces from tuning_data/run-traces-images/ and matches them with correspon
 Produces TensorFlow Datasets compatible with robot learning frameworks.
 
 Expected file structure:
-  tuning_data/run-traces-images/
+  traces/
+    1.json
+    2.json
+    ...
+  images/
     1/
-      trace-1.json
-      images-1/
-        <command_id>_<timestamp>.jpg
+      <command_id>_<timestamp>.jpg
     2/
-      trace-2.json  
-      images-2/
-        <command_id>_<timestamp>.jpg
+      <command_id>_<timestamp>.jpg
+    ...
+  
+  Output:
+  traces_matched/
+    1.json (with image fields populated)
+    2.json (with image fields populated)
     ...
 """
 
@@ -84,12 +90,12 @@ class RDLSDatasetConverter(tfds.core.GeneratorBasedBuilder):
 
     def _split_generators(self, dl_manager: tfds.download.DownloadManager):
         """Returns SplitGenerators."""
-        # Point to the data directory
-        data_dir = Path(__file__).parent / 'tuning_data' / 'run-traces-images'
-        json_files = list(data_dir.glob('*/trace-*.json'))
+        # Point to the matched traces directory
+        traces_matched_dir = Path(__file__).parent / 'traces_matched'
+        json_files = sorted(traces_matched_dir.glob('*.json'))
         
         if not json_files:
-            raise ValueError(f"No JSON files found in {data_dir}")
+            raise ValueError(f"No JSON files found in {traces_matched_dir}")
         
         return {
             'train': self._generate_examples(json_files),
@@ -169,7 +175,7 @@ class RDLSDatasetConverter(tfds.core.GeneratorBasedBuilder):
                 # action = np.concatenate([joint_deltas, cartesian_deltas, gripper_action])  # WITH JOINTS
                 
                 # Load actual image if available
-                image_array = self._load_image_for_step(json_file, step, valid_step_idx)
+                image_array = self._load_image_for_step(json_file, step)
                 total_steps += 1
                 if image_array is None:
                     # Create a placeholder when no matching image is found
@@ -206,7 +212,7 @@ class RDLSDatasetConverter(tfds.core.GeneratorBasedBuilder):
             }
             
             # Print episode summary
-            episode_num = json_file.stem.split('-')[-1]
+            episode_num = json_file.stem
             episode_matched = sum(1 for s in steps if not np.all(s['observation']['image'] == 128))
             print(f"Episode {episode_num}: {episode_matched}/{len(steps)} images matched")
             
@@ -218,39 +224,37 @@ class RDLSDatasetConverter(tfds.core.GeneratorBasedBuilder):
         # Print overall summary
         print(f"\nOverall: {matched_images}/{total_steps} images matched ({matched_images/total_steps*100:.1f}%)")
 
-    def _load_image_for_step(self, json_file: Path, step: dict, step_idx: int) -> Optional[np.ndarray]:
-        """Load the image for this step by matching order in the images folder."""
-        # Get the episode number from the trace filename (e.g., trace-1.json -> 1)
-        episode_num = json_file.stem.split('-')[-1]
-        
-        # Look for images in the corresponding images folder
-        images_dir = json_file.parent / f'images-{episode_num}'
-        if not images_dir.exists():
-            print(f"Images directory not found: {images_dir}")
+    def _load_image_for_step(self, json_file: Path, step: dict) -> Optional[np.ndarray]:
+        """Load the image from the step's image field if it exists."""
+        # Check if the step has an image field with a filename
+        image_filename = step.get('image')
+        if not image_filename:
             return None
+            
+        # Get the episode number from the trace filename (e.g., 1.json -> 1)
+        episode_num = json_file.stem
         
-        # Get all jpg files sorted by name (which should be in chronological order)
-        image_files = sorted(images_dir.glob('*.jpg'))
+        # Look for the image in the images folder
+        images_dir = Path(__file__).parent / 'images' / episode_num
+        img_path = images_dir / image_filename
         
-        # Check if we have an image for this step index
-        if step_idx < len(image_files):
-            img_path = image_files[step_idx]
-            try:
-                # Load and resize image to 256x256
-                img = Image.open(img_path)
-                img = img.resize((256, 256), Image.Resampling.LANCZOS)
-                img_array = np.array(img)
-                
-                # Ensure it's RGB (not RGBA)
-                if img_array.shape[-1] == 4:
-                    img_array = img_array[:, :, :3]
-                
-                return img_array.astype(np.uint8)
-            except Exception as e:
-                print(f"Error loading image {img_path}: {e}")
-                return None
-        else:
-            # No image for this step index
+        if not img_path.exists():
+            print(f"Image file not found: {img_path}")
+            return None
+            
+        try:
+            # Load and resize image to 256x256
+            img = Image.open(img_path)
+            img = img.resize((256, 256), Image.Resampling.LANCZOS)
+            img_array = np.array(img)
+            
+            # Ensure it's RGB (not RGBA)
+            if img_array.shape[-1] == 4:
+                img_array = img_array[:, :, :3]
+            
+            return img_array.astype(np.uint8)
+        except Exception as e:
+            print(f"Error loading image {img_path}: {e}")
             return None
     
     def _create_placeholder_image(self) -> np.ndarray:
