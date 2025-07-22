@@ -17,8 +17,8 @@ from flask import send_from_directory, request
 # Configuration
 DEVICE_PORT = '/dev/ttyACM0'  # Change this to your device path
 BAUD_RATE = 115200
-RECORDING_FREQUENCY = 2  # Hz (2 times per second)
-RECORDING_INTERVAL = 0.5  # Seconds between recordings (0.5 seconds)
+RECORDING_FREQUENCY = 5  # Hz (5 times per second)
+RECORDING_INTERVAL = 0.2  # Seconds between recordings (0.2 seconds)
 
 # Sync server configuration
 SYNC_SERVER_URL = "http://localhost:5512"  # Change to your server IP
@@ -99,21 +99,25 @@ def continuous_recording(mc, trace, start_time):
             coords = mc.get_coords()  # End-effector coordinates [x, y, z, rx, ry, rz]
 
             if angles is not None:
-                # Calculate timestamp relative to start
-                timestamp = time.time() - start_time
+                # Unix timestamp with millisecond precision (consistent with image timestamps)
+                current_time = time.time()
+                unix_timestamp_ms = round(current_time * 1000) / 1000  # Round to millisecond precision
+                clean_timestamp_ms = int(round(current_time * 1000))  # Remove decimal point
+                relative_timestamp = current_time - start_time
 
                 # Use the current gripper value (set by user)
                 gripper_value = current_gripper_value
 
                 # Get additional robot state information
                 robot_state = {
-                    "timestamp": timestamp,
-                    "timestamp_ms": datetime.now().strftime("%Y%m%d_%H%M%S_%f")[:-3],
+                    "timestamp_ms": clean_timestamp_ms,
+                    "relative_timestamp": relative_timestamp,
                     "angles": angles,
                     "coords": coords,
                     "gripper_value": gripper_value,
                     "is_moving": mc.is_moving() if hasattr(mc, 'is_moving') else False,
                     "is_powered_on": mc.is_powered_on() if hasattr(mc, 'is_powered_on') else True,
+                    "image": None  # Placeholder for linking with captured images
                 }
 
                 # Add to trace
@@ -196,17 +200,25 @@ def record_movement_trace(mc):
                 success = input("Did the task complete successfully? (y/n): ").strip().lower()
                 success_bool = success in ['y', 'yes', 'true', '1']
 
-                # Save the trace
-                timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-                filename = f"joint_trace_{timestamp}.json"
+                # Save the trace using task name in traces folder
+                traces_dir = "traces"
+                os.makedirs(traces_dir, exist_ok=True)
+                task_name = task_metadata.get("task_name", "unknown_task")
+                filename = os.path.join(traces_dir, f"{task_name}.json")
+
+                # Generate metadata timestamps
+                end_time = time.time()
+                duration_seconds = end_time - start_time if start_time else 0
+                start_timestamp_clean = int(round(start_time * 1000)) if start_time else None
+                end_timestamp_clean = int(round(end_time * 1000))
 
                 trace_data = {
                     "metadata": {
                         "recording_frequency_hz": RECORDING_FREQUENCY,
                         "total_points": len(trace),
-                        "duration_seconds": (time.time() - start_time) if start_time else 0,
-                        "timestamp": timestamp,
-                        "timestamp_ms": datetime.now().strftime("%Y%m%d_%H%M%S_%f")[:-3],
+                        "duration_seconds": duration_seconds,
+                        "start_timestamp_ms": start_timestamp_clean,
+                        "end_timestamp_ms": end_timestamp_clean,
                         "task_success": success_bool,
                         **task_metadata
                     },

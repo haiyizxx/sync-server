@@ -16,8 +16,8 @@ app = Flask(__name__)
 CORS(app)  # Enable CORS for iPhone app
 
 # Directory to store images
-IMAGE_DIR = "uploaded_images"
-os.makedirs(IMAGE_DIR, exist_ok=True)
+BASE_IMAGE_DIR = "images"
+os.makedirs(BASE_IMAGE_DIR, exist_ok=True)
 
 # Global state
 current_command = None
@@ -69,46 +69,117 @@ def upload_image():
     if not image or not timestamp or not command_id:
         return jsonify({'status': 'error', 'message': 'Missing data'}), 400
 
-    # Save image with a unique filename
-    filename = f"{task_name}_{command_id}_{timestamp}.jpg"
-    filepath = os.path.join(IMAGE_DIR, filename)
+    # Create task-specific subdirectory
+    task_dir = os.path.join(BASE_IMAGE_DIR, task_name) if task_name else BASE_IMAGE_DIR
+    os.makedirs(task_dir, exist_ok=True)
+
+    # Save image with a unique filename (remove periods from timestamp)
+    clean_timestamp = timestamp.replace('.', '')
+    filename = f"{clean_timestamp}.jpg"
+    filepath = os.path.join(task_dir, filename)
     image.save(filepath)
+
+    # Also save as latest.jpg in the main images folder
+    latest_filepath = os.path.join(BASE_IMAGE_DIR, "latest.jpg")
+    image.seek(0)  # Reset file pointer to beginning
+    image.save(latest_filepath)
 
     # Save metadata
     meta = {
         'filename': filename,
         'timestamp': timestamp,
         'command_id': command_id,
-        'task_name': task_name
+        'task_name': task_name,
+        'task_dir': task_dir
     }
-    with open(os.path.join(IMAGE_DIR, filename + ".json"), "w") as f:
+    with open(os.path.join(task_dir, filename + ".json"), "w") as f:
         json.dump(meta, f)
 
-    return jsonify({'status': 'success', 'filename': filename})
+    # Also save latest metadata
+    with open(os.path.join(BASE_IMAGE_DIR, "latest.jpg.json"), "w") as f:
+        json.dump(meta, f)
+
+    return jsonify({'status': 'success', 'filename': filename, 'task_dir': task_dir})
 
 @app.route('/images', methods=['GET'])
 def list_images():
     """
     List all uploaded images and their metadata
     """
-    files = [f for f in os.listdir(IMAGE_DIR) if f.endswith('.jpg')]
     images = []
+    # Walk through all subdirectories in the base image directory
+    for root, dirs, files in os.walk(BASE_IMAGE_DIR):
+        for f in files:
+            if f.endswith('.jpg'):
+                full_path = os.path.join(root, f)
+                relative_path = os.path.relpath(full_path, BASE_IMAGE_DIR)
+                meta_file = os.path.join(root, f + ".json")
+                if os.path.exists(meta_file):
+                    with open(meta_file) as mf:
+                        meta = json.load(mf)
+                else:
+                    meta = {}
+                images.append({'filename': f, 'relative_path': relative_path, **meta})
+    return jsonify({'images': images})
+
+@app.route('/images/<task_name>', methods=['GET'])
+def list_task_images(task_name):
+    """
+    List all images for a specific task
+    """
+    task_dir = os.path.join(BASE_IMAGE_DIR, task_name)
+    if not os.path.exists(task_dir):
+        return jsonify({'status': 'error', 'message': f'Task {task_name} not found'}), 404
+    
+    images = []
+    files = [f for f in os.listdir(task_dir) if f.endswith('.jpg')]
     for f in files:
-        meta_file = os.path.join(IMAGE_DIR, f + ".json")
+        meta_file = os.path.join(task_dir, f + ".json")
         if os.path.exists(meta_file):
             with open(meta_file) as mf:
                 meta = json.load(mf)
         else:
             meta = {}
-        images.append({'filename': f, **meta})
-    return jsonify({'images': images})
+        images.append({'filename': f, 'task_name': task_name, **meta})
+    
+    return jsonify({'task_name': task_name, 'images': images})
 
-@app.route('/image/<filename>', methods=['GET'])
-def get_image(filename):
+@app.route('/tasks', methods=['GET'])
+def list_tasks():
     """
-    Download an image by filename
+    List all available tasks (subdirectories in images folder)
     """
-    return send_from_directory(IMAGE_DIR, filename)
+    tasks = []
+    if os.path.exists(BASE_IMAGE_DIR):
+        for item in os.listdir(BASE_IMAGE_DIR):
+            item_path = os.path.join(BASE_IMAGE_DIR, item)
+            if os.path.isdir(item_path):
+                # Count images in this task directory
+                image_count = len([f for f in os.listdir(item_path) if f.endswith('.jpg')])
+                tasks.append({'task_name': item, 'image_count': image_count})
+    
+    return jsonify({'tasks': tasks})
+
+@app.route('/image/<path:filepath>', methods=['GET'])
+def get_image(filepath):
+    """
+    Download an image by filepath (can include task subdirectory)
+    Examples: /image/task1/123_456.jpg or /image/123_456.jpg
+    """
+    # If no directory separator, search all task folders for the file
+    if '/' not in filepath:
+        filename = filepath
+        for root, dirs, files in os.walk(BASE_IMAGE_DIR):
+            if filename in files:
+                return send_from_directory(root, filename)
+        return jsonify({'status': 'error', 'message': 'Image not found'}), 404
+    else:
+        # Direct path provided
+        directory, filename = os.path.split(filepath)
+        full_directory = os.path.join(BASE_IMAGE_DIR, directory)
+        if os.path.exists(os.path.join(full_directory, filename)):
+            return send_from_directory(full_directory, filename)
+        return jsonify({'status': 'error', 'message': 'Image not found'}), 404
 
 @app.route('/latest_image', methods=['GET'])
 def get_latest_image():
@@ -116,32 +187,22 @@ def get_latest_image():
     Get the most recently uploaded image
     """
     try:
-        # Get all jpg files
-        files = [f for f in os.listdir(IMAGE_DIR) if f.endswith('.jpg')]
+        # Check if we have a latest.jpg file
+        latest_filepath = os.path.join(BASE_IMAGE_DIR, "latest.jpg")
+        latest_meta_filepath = os.path.join(BASE_IMAGE_DIR, "latest.jpg.json")
         
-        if not files:
-            return jsonify({'status': 'error', 'message': 'No images found'}), 404
+        if not os.path.exists(latest_filepath):
+            return jsonify({'status': 'error', 'message': 'No latest image found'}), 404
         
-        # Sort files by modification time (newest first)
-        files_with_time = []
-        for f in files:
-            filepath = os.path.join(IMAGE_DIR, f)
-            mod_time = os.path.getmtime(filepath)
-            files_with_time.append((f, mod_time))
-        
-        # Get the most recent file
-        latest_file = max(files_with_time, key=lambda x: x[1])[0]
-        
-        # Get metadata if available
-        meta_file = os.path.join(IMAGE_DIR, latest_file + ".json")
         metadata = {}
-        if os.path.exists(meta_file):
-            with open(meta_file) as mf:
+        if os.path.exists(latest_meta_filepath):
+            with open(latest_meta_filepath) as mf:
                 metadata = json.load(mf)
         
         return jsonify({
             'status': 'success',
-            'filename': latest_file,
+            'filename': 'latest.jpg',
+            'relative_path': 'latest.jpg',
             'metadata': metadata
         })
         
@@ -154,24 +215,13 @@ def get_latest_image_file():
     Download the most recently uploaded image file
     """
     try:
-        # Get all jpg files
-        files = [f for f in os.listdir(IMAGE_DIR) if f.endswith('.jpg')]
+        # Check if we have a latest.jpg file
+        latest_filepath = os.path.join(BASE_IMAGE_DIR, "latest.jpg")
         
-        if not files:
-            return jsonify({'status': 'error', 'message': 'No images found'}), 404
-        
-        # Sort files by modification time (newest first)
-        files_with_time = []
-        for f in files:
-            filepath = os.path.join(IMAGE_DIR, f)
-            mod_time = os.path.getmtime(filepath)
-            files_with_time.append((f, mod_time))
-        
-        # Get the most recent file
-        latest_file = max(files_with_time, key=lambda x: x[1])[0]
-        
-        # Return the actual image file
-        return send_from_directory(IMAGE_DIR, latest_file)
+        if not os.path.exists(latest_filepath):
+            return jsonify({'status': 'error', 'message': 'No latest image found'}), 404
+            
+        return send_from_directory(BASE_IMAGE_DIR, "latest.jpg")
         
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
@@ -235,8 +285,12 @@ if __name__ == '__main__':
     print("  GET  /poll    - Poll for new commands")
     print("  GET  /health  - Health check")
     print("  POST /upload_image - iPhone uploads images")
-    print("  GET  /images - List images")
-    print("  GET  /image/<filename> - Download image")
+    print("  GET  /tasks - List all available tasks")
+    print("  GET  /images - List all images")
+    print("  GET  /images/<task_name> - List images for specific task")
+    print("  GET  /image/<filepath> - Download image (supports task subdirectories)")
+    print("  GET  /latest_image - Get latest image metadata")
+    print("  GET  /latest_image_file - Download latest image file")
     
     # Run on all interfaces, port 5512
     app.run(host='0.0.0.0', port=5512, debug=False, threaded=True) 
