@@ -1,0 +1,16 @@
+{
+  "dataset_type": "numbered_episodes",
+  "description": "Robot demonstrations with simple numeric task identifiers",
+  "episodes": 52,
+  "total_steps": 3667,
+  "matched_steps": 3667,
+  "match_rate": 100.0,
+  "task_mapping": {
+    "1-10": "Pick and place tasks",
+    "11-20": "Stacking tasks",
+    "21-30": "Sorting tasks",
+    "31-40": "Assembly tasks",
+    "41-50": "Manipulation tasks",
+    "51-57": "Complex sequences"
+  }
+}

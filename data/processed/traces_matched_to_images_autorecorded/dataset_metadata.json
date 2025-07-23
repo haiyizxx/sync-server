@@ -1,0 +1,11 @@
+{
+  "dataset_type": "auto_recorded_episodes",
+  "description": "Robot demonstrations with timestamp-based identifiers from rapid recording sessions",
+  "episodes": 48,
+  "total_steps": 1041,
+  "matched_steps": 1040,
+  "match_rate": 99.90393852065321,
+  "recording_format": "YYYYMMDDHHMMSS",
+  "recording_date": "2025-07-22",
+  "recording_method": "Keyboard-controlled rapid recording (record_trace_keyboard.py)"
+}

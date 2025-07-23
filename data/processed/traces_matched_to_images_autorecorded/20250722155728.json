@@ -1,0 +1,283 @@
+{
+  "metadata": {
+    "recording_frequency_hz": 5,
+    "total_points": 11,
+    "duration_seconds": 3.896846294403076,
+    "start_timestamp_ms": 1753214244525,
+    "end_timestamp_ms": 1753214248421,
+    "task_name": "20250722155728",
+    "description": "move the arm up and down while gripping the lego piece",
+    "objects_involved": [
+      "robot_arm"
+    ],
+    "robot_model": "myCobot 280",
+    "task_success": true,
+    "recording_mode": "keyboard_controlled"
+  },
+  "trace": [
+    {
+      "timestamp_ms": 1753214244634,
+      "relative_timestamp": 0.10900425910949707,
+      "angles": [
+        57.21,
+        -112.06,
+        -24.96,
+        -71.54,
+        -80.41,
+        93.95
+      ],
+      "coords": [
+        159.0,
+        46.7,
+        -34.6,
+        79.2,
+        -65.41,
+        58.76
+      ],
+      "gripper_value": 20,
+      "is_moving": 0,
+      "is_powered_on": true,
+      "image": "176_1753214250416.jpg"
+    },
+    {
+      "timestamp_ms": 1753214244987,
+      "relative_timestamp": 0.46277737617492676,
+      "angles": [
+        57.12,
+        -112.67,
+        -25.4,
+        -70.31,
+        -81.65,
+        94.3
+      ],
+      "coords": [
+        157.2,
+        42.0,
+        -40.1,
+        80.12,
+        -65.42,
+        58.38
+      ],
+      "gripper_value": 20,
+      "is_moving": 0,
+      "is_powered_on": true,
+      "image": "176_1753214250920.jpg"
+    },
+    {
+      "timestamp_ms": 1753214245341,
+      "relative_timestamp": 0.8162987232208252,
+      "angles": [
+        56.77,
+        -145.54,
+        -25.75,
+        -62.49,
+        -82.7,
+        122.87
+      ],
+      "coords": [
+        85.5,
+        -67.5,
+        -89.7,
+        71.53,
+        -68.5,
+        69.51
+      ],
+      "gripper_value": 20,
+      "is_moving": 0,
+      "is_powered_on": true,
+      "image": "176_1753214251464.jpg"
+    },
+    {
+      "timestamp_ms": 1753214245695,
+      "relative_timestamp": 1.170166254043579,
+      "angles": [
+        56.68,
+        -177.01,
+        -25.75,
+        -38.05,
+        -78.04,
+        131.92
+      ],
+      "coords": [
+        28.9,
+        -152.4,
+        -85.9,
+        58.6,
+        -69.28,
+        80.33
+      ],
+      "gripper_value": 20,
+      "is_moving": 0,
+      "is_powered_on": true,
+      "image": "176_1753214251986.jpg"
+    },
+    {
+      "timestamp_ms": 1753214246048,
+      "relative_timestamp": 1.5235633850097656,
+      "angles": [
+        56.6,
+        169.89,
+        -25.75,
+        -20.21,
+        -76.55,
+        130.07
+      ],
+      "coords": [
+        10.4,
+        -179.6,
+        -79.3,
+        52.34,
+        -70.64,
+        84.77
+      ],
+      "gripper_value": 20,
+      "is_moving": 0,
+      "is_powered_on": true,
+      "image": "176_1753214252512.jpg"
+    },
+    {
+      "timestamp_ms": 1753214246401,
+      "relative_timestamp": 1.8764848709106445,
+      "angles": [
+        56.6,
+        170.24,
+        -25.75,
+        -21.97,
+        -76.37,
+        131.39
+      ],
+      "coords": [
+        11.2,
+        -178.7,
+        -79.1,
+        51.66,
+        -71.46,
+        86.07
+      ],
+      "gripper_value": 20,
+      "is_moving": 0,
+      "is_powered_on": true,
+      "image": "176_1753214253077.jpg"
+    },
+    {
+      "timestamp_ms": 1753214246755,
+      "relative_timestamp": 2.230546236038208,
+      "angles": [
+        57.04,
+        177.71,
+        -25.22,
+        -21.18,
+        -79.62,
+        124.18
+      ],
+      "coords": [
+        39.4,
+        -138.4,
+        -105.0,
+        63.71,
+        -72.97,
+        75.16
+      ],
+      "gripper_value": 20,
+      "is_moving": 0,
+      "is_powered_on": true,
+      "image": "176_1753214253077.jpg"
+    },
+    {
+      "timestamp_ms": 1753214247109,
+      "relative_timestamp": 2.5843007564544678,
+      "angles": [
+        57.12,
+        -147.21,
+        -25.31,
+        -41.04,
+        -79.98,
+        99.75
+      ],
+      "coords": [
+        114.5,
+        -22.3,
+        -100.6,
+        77.48,
+        -65.25,
+        60.05
+      ],
+      "gripper_value": 20,
+      "is_moving": 0,
+      "is_powered_on": true,
+      "image": "176_1753214253636.jpg"
+    },
+    {
+      "timestamp_ms": 1753214247463,
+      "relative_timestamp": 2.93796706199646,
+      "angles": [
+        57.12,
+        -119.35,
+        -25.31,
+        -52.82,
+        -82.44,
+        81.12
+      ],
+      "coords": [
+        162.4,
+        51.2,
+        -57.9,
+        85.52,
+        -63.95,
+        53.94
+      ],
+      "gripper_value": 20,
+      "is_moving": 0,
+      "is_powered_on": true,
+      "image": "176_1753214254234.jpg"
+    },
+    {
+      "timestamp_ms": 1753214247816,
+      "relative_timestamp": 3.291677474975586,
+      "angles": [
+        57.12,
+        -111.35,
+        -25.31,
+        -50.44,
+        -82.96,
+        71.54
+      ],
+      "coords": [
+        175.0,
+        70.6,
+        -44.4,
+        88.09,
+        -64.28,
+        51.86
+      ],
+      "gripper_value": 20,
+      "is_moving": 0,
+      "is_powered_on": true,
+      "image": "176_1753214254801.jpg"
+    },
+    {
+      "timestamp_ms": 1753214248170,
+      "relative_timestamp": 3.6453793048858643,
+      "angles": [
+        57.12,
+        -111.35,
+        -25.31,
+        -50.27,
+        -82.96,
+        71.63
+      ],
+      "coords": [
+        174.8,
+        70.3,
+        -44.6,
+        88.03,
+        -64.81,
+        51.92
+      ],
+      "gripper_value": 20,
+      "is_moving": 0,
+      "is_powered_on": true,
+      "image": "176_1753214255349.jpg"
+    }
+  ]
+}
