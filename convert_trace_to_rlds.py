@@ -190,7 +190,7 @@ class RDLSDatasetConverter(tfds.core.GeneratorBasedBuilder):
                         'state': state,  # Now includes cartesian coords + gripper (joints excluded)
                     },
                     'action': action,
-                    'language_instruction': metadata.get('description', 'Robot manipulation task'),
+                    'language_instruction': 'can you find the lego piece, pick it up, and move it from right to left?',
                     'reward': 1.0 if step_idx == len(trace) - 1 and metadata.get('task_success', False) else 0.0,
                     'is_first': valid_step_idx == 0,
                     'is_last': step_idx == len(trace) - 1,
