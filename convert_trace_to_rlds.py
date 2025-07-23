@@ -32,7 +32,7 @@ from typing import Iterator, Optional
 from PIL import Image
 
 
-class RDLSDatasetConverter(tfds.core.GeneratorBasedBuilder):
+class RLDSDatasetConverter(tfds.core.GeneratorBasedBuilder):
     """DatasetBuilder for MyCobot robot demonstrations."""
     
     VERSION = tfds.core.Version('1.0.0')
@@ -268,7 +268,7 @@ if __name__ == '__main__':
     print("Starting dataset creation...")
     # This will create the dataset
     data_dir = Path(__file__).parent / 'rlds_dataset'
-    builder = RDLSDatasetConverter(data_dir=str(data_dir))
+    builder = RLDSDatasetConverter(data_dir=str(data_dir))
     print(f"Data directory will be: {builder.data_dir}")
     builder.download_and_prepare()
     print(f"Dataset created at: {builder.data_dir}")
