@@ -7,7 +7,7 @@
     "end_timestamp_ms": 1753206288879,
     "task_success": true,
     "task_name": "2",
-    "description": "pick up lego",
+    "description": "We use a myCobot 280 robot arm with six degrees of freedom and a gripper. These are the movement instructions: \"can you find the lego piece, pick it up, and move it from right to left?\"",
     "objects_involved": [
       "lego"
     ],

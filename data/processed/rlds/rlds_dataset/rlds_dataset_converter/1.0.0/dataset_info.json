@@ -1,10 +1,9 @@
 {
-  "citation": "@misc{mycobot_dataset,\n                title={MyCobot Robot Demonstrations},\n                author={Your Name},\n                year={2025}\n            }",
   "description": "MyCobot 280 robot demonstrations with joint/Cartesian states and camera images",
   "fileFormat": "tfrecord",
   "location": {
     "urls": [
-      "https://github.com/your-username/mycobot-dataset"
+      "https://github.com/mycobot/demonstrations"
     ]
   },
   "moduleName": "__main__",
@@ -16,12 +15,17 @@
     {
       "filepathTemplate": "{DATASET}-{SPLIT}.{FILEFORMAT}-{SHARD_X_OF_Y}",
       "name": "train",
-      "numBytes": "320824358",
+      "numBytes": "93715512",
       "shardLengths": [
-        "22",
-        "23",
-        "23",
-        "22"
+        "91"
+      ]
+    },
+    {
+      "filepathTemplate": "{DATASET}-{SPLIT}.{FILEFORMAT}-{SHARD_X_OF_Y}",
+      "name": "validation",
+      "numBytes": "3526798",
+      "shardLengths": [
+        "4"
       ]
     }
   ],

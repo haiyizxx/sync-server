@@ -140,6 +140,11 @@ def classify_episode(episode_name: str) -> str:
         return 'unknown'
 
 
+def get_hardcoded_description_for_numbered_episode(episode_number: int) -> str:
+    """Get hardcoded description for numbered episodes."""
+    return 'can you find the lego piece, pick it up, and move it from right to left?'
+
+
 def process_all_episodes():
     """Match all traces with images and split into numbered/autorecorded datasets."""
     
@@ -201,18 +206,28 @@ def process_all_episodes():
         image_timestamps = load_image_timestamps(images_dir)
         
         if not image_timestamps:
-            print(f"⚠️ No images found for episode {episode_name}")
-            # Still save the trace without images
-            output_file = all_dir / f"{episode_name}.json"
-            with open(output_file, 'w') as f:
-                json.dump(trace_data, f, indent=2)
-            stats[episode_type]['count'] += 1
+            print(f"⚠️ No images found for episode {episode_name}, skipping completely")
             continue
         
         print(f"Found {len(image_timestamps)} images")
         
         # Match traces with images using distribution algorithm
         trace_data, mean_offset, std_dev = distribute_images_to_trace(trace_data, image_timestamps)
+        
+        # Update description with wrapper for all episodes
+        if 'metadata' not in trace_data:
+            trace_data['metadata'] = {}
+        
+        # Get the current description
+        if episode_type == 'numbered':
+            episode_num = int(episode_name)
+            current_description = get_hardcoded_description_for_numbered_episode(episode_num)
+        else:
+            current_description = trace_data['metadata'].get('description', 'no description found')
+        
+        # Wrap the description with the robot context
+        wrapped_description = f'We use a myCobot 280 robot arm with six degrees of freedom and a gripper. These are the movement instructions: "{current_description}"'
+        trace_data['metadata']['description'] = wrapped_description
         
         # Update statistics
         if 'trace' in trace_data:

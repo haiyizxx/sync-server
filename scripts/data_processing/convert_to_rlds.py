@@ -73,8 +73,20 @@ class RLDSDatasetConverter(tfds.core.GeneratorBasedBuilder):
         
         print(f"Found {len(json_files)} episodes to convert from {self.source_dir}")
         
+        # Split into train (95%) and validation (5%)
+        total_episodes = len(json_files)
+        val_size = max(1, int(0.05 * total_episodes))  # At least 1 episode for validation
+        train_size = total_episodes - val_size
+        
+        train_files = json_files[:train_size]
+        val_files = json_files[train_size:]
+        
+        print(f"Train episodes: {len(train_files)} ({len(train_files)/total_episodes*100:.1f}%)")
+        print(f"Validation episodes: {len(val_files)} ({len(val_files)/total_episodes*100:.1f}%)")
+        
         return {
-            'train': self._generate_examples(json_files),
+            tfds.Split.TRAIN: self._generate_examples(train_files),
+            tfds.Split.VALIDATION: self._generate_examples(val_files),
         }
 
     def _normalize_gripper_value(self, gripper_value: float) -> float:
@@ -100,8 +112,8 @@ class RLDSDatasetConverter(tfds.core.GeneratorBasedBuilder):
                     print(f"Warning: No trace data in {json_file}")
                     continue
                 
-                # Use the same hardcoded language instruction as the original script
-                language_instruction = 'can you find the lego piece, pick it up, and move it from right to left?'
+                # Use the description from trace metadata as language instruction
+                language_instruction = metadata.get('description', 'no description found')
                 
                 # Prepare episode steps
                 steps = []
@@ -277,7 +289,9 @@ def main():
     # Print dataset info
     ds_info = builder.info
     print(f"\nDataset info:")
-    print(f"  Number of episodes: {ds_info.splits['train'].num_examples}")
+    print(f"  Train episodes: {ds_info.splits['train'].num_examples}")
+    print(f"  Validation episodes: {ds_info.splits['validation'].num_examples}")
+    print(f"  Total episodes: {ds_info.splits['train'].num_examples + ds_info.splits['validation'].num_examples}")
     print(f"  Features: {list(ds_info.features.keys())}")
 
 

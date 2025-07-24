@@ -4,19 +4,23 @@
             "episode_metadata": {
                 "featuresDict": {
                     "features": {
-                        "duration_seconds": {
-                            "pythonClassName": "tensorflow_datasets.core.features.scalar.Scalar",
-                            "tensor": {
-                                "dtype": "float32",
-                                "encoding": "none",
-                                "shape": {}
-                            }
-                        },
                         "episode_id": {
                             "pythonClassName": "tensorflow_datasets.core.features.text_feature.Text",
                             "text": {}
                         },
+                        "episode_length": {
+                            "pythonClassName": "tensorflow_datasets.core.features.scalar.Scalar",
+                            "tensor": {
+                                "dtype": "int32",
+                                "encoding": "none",
+                                "shape": {}
+                            }
+                        },
                         "file_path": {
+                            "pythonClassName": "tensorflow_datasets.core.features.text_feature.Text",
+                            "text": {}
+                        },
+                        "language_instruction": {
                             "pythonClassName": "tensorflow_datasets.core.features.text_feature.Text",
                             "text": {}
                         },
@@ -28,14 +32,6 @@
                             "pythonClassName": "tensorflow_datasets.core.features.scalar.Scalar",
                             "tensor": {
                                 "dtype": "bool",
-                                "encoding": "none",
-                                "shape": {}
-                            }
-                        },
-                        "total_points": {
-                            "pythonClassName": "tensorflow_datasets.core.features.scalar.Scalar",
-                            "tensor": {
-                                "dtype": "int32",
                                 "encoding": "none",
                                 "shape": {}
                             }
@@ -94,17 +90,13 @@
                                         "shape": {}
                                     }
                                 },
-                                "language_instruction": {
-                                    "pythonClassName": "tensorflow_datasets.core.features.text_feature.Text",
-                                    "text": {}
-                                },
                                 "observation": {
                                     "featuresDict": {
                                         "features": {
                                             "image": {
                                                 "image": {
                                                     "dtype": "uint8",
-                                                    "encodingFormat": "png",
+                                                    "encodingFormat": "jpeg",
                                                     "shape": {
                                                         "dimensions": [
                                                             "256",

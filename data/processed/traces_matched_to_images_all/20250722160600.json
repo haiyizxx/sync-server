@@ -6,7 +6,7 @@
     "start_timestamp_ms": 1753214752863,
     "end_timestamp_ms": 1753214760292,
     "task_name": "20250722160600",
-    "description": "move the arm up and down while gripping the lego piece",
+    "description": "We use a myCobot 280 robot arm with six degrees of freedom and a gripper. These are the movement instructions: \"move the arm up and down while gripping the lego piece\"",
     "objects_involved": [
       "robot_arm"
     ],

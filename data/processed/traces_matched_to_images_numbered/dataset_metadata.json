@@ -1,7 +1,7 @@
 {
   "dataset_type": "numbered_episodes",
   "description": "Robot demonstrations with simple numeric task identifiers",
-  "episodes": 52,
+  "episodes": 51,
   "total_steps": 3667,
   "matched_steps": 3667,
   "match_rate": 100.0,
