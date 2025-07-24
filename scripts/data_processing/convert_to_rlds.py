@@ -47,6 +47,7 @@ class RLDSDatasetConverter(tfds.core.GeneratorBasedBuilder):
                     'is_first': tfds.features.Scalar(dtype=np.bool_),
                     'is_last': tfds.features.Scalar(dtype=np.bool_),
                     'is_terminal': tfds.features.Scalar(dtype=np.bool_),
+                    'language_instruction': tfds.features.Text(),
                 }),
                 'episode_metadata': tfds.features.FeaturesDict({
                     'file_path': tfds.features.Text(),
@@ -54,7 +55,6 @@ class RLDSDatasetConverter(tfds.core.GeneratorBasedBuilder):
                     'episode_length': tfds.features.Scalar(dtype=np.int32),
                     'task_success': tfds.features.Scalar(dtype=np.bool_),
                     'task_name': tfds.features.Text(),
-                    'language_instruction': tfds.features.Text(),
                 }),
             }),
             supervised_keys=None,
@@ -174,6 +174,7 @@ class RLDSDatasetConverter(tfds.core.GeneratorBasedBuilder):
                         'is_first': step_idx == 0,
                         'is_last': step_idx == len(trace) - 1,
                         'is_terminal': False,
+                        'language_instruction': language_instruction,
                     }
                     
                     steps.append(step_data)
@@ -186,7 +187,6 @@ class RLDSDatasetConverter(tfds.core.GeneratorBasedBuilder):
                         'episode_length': len(steps),
                         'task_success': metadata.get('task_success', True),
                         'task_name': metadata.get('task_name', 'unknown'),
-                        'language_instruction': language_instruction,
                     }
                     
                     # Yield the complete episode

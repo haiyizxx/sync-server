@@ -15,17 +15,17 @@
     {
       "filepathTemplate": "{DATASET}-{SPLIT}.{FILEFORMAT}-{SHARD_X_OF_Y}",
       "name": "train",
-      "numBytes": "94507414",
+      "numBytes": "19658573",
       "shardLengths": [
-        "91"
+        "42"
       ]
     },
     {
       "filepathTemplate": "{DATASET}-{SPLIT}.{FILEFORMAT}-{SHARD_X_OF_Y}",
       "name": "validation",
-      "numBytes": "3556834",
+      "numBytes": "1385624",
       "shardLengths": [
-        "4"
+        "2"
       ]
     }
   ],
