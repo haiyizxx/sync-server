@@ -214,6 +214,13 @@ def process_all_episodes():
         # Match traces with images using distribution algorithm
         trace_data, mean_offset, std_dev = distribute_images_to_trace(trace_data, image_timestamps)
         
+        # Check episode length and skip if too short
+        if 'trace' in trace_data:
+            episode_length = len(trace_data['trace'])
+            if episode_length < 15:
+                print(f"⚠️ Episode {episode_name} too short ({episode_length} steps), skipping")
+                continue
+        
         # Update description with wrapper for all episodes
         if 'metadata' not in trace_data:
             trace_data['metadata'] = {}
