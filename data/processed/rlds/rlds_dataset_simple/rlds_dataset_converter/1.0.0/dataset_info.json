@@ -1,0 +1,33 @@
+{
+  "description": "MyCobot 280 robot demonstrations with joint/Cartesian states and camera images",
+  "fileFormat": "tfrecord",
+  "location": {
+    "urls": [
+      "https://github.com/mycobot/demonstrations"
+    ]
+  },
+  "moduleName": "__main__",
+  "name": "rlds_dataset_converter",
+  "releaseNotes": {
+    "1.0.0": "Initial release with real camera images from robot demonstrations."
+  },
+  "splits": [
+    {
+      "filepathTemplate": "{DATASET}-{SPLIT}.{FILEFORMAT}-{SHARD_X_OF_Y}",
+      "name": "train",
+      "numBytes": "8126048",
+      "shardLengths": [
+        "19"
+      ]
+    },
+    {
+      "filepathTemplate": "{DATASET}-{SPLIT}.{FILEFORMAT}-{SHARD_X_OF_Y}",
+      "name": "validation",
+      "numBytes": "427674",
+      "shardLengths": [
+        "1"
+      ]
+    }
+  ],
+  "version": "1.0.0"
+}

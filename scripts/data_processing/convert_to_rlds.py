@@ -249,11 +249,12 @@ def main():
     # Parse command line arguments
     dataset_type = 'all'
     if len(sys.argv) > 1:
-        if sys.argv[1] not in ['numbered', 'autorecorded']:
-            print("Usage: python convert_to_rlds_unified.py [numbered|autorecorded]")
+        if sys.argv[1] not in ['numbered', 'autorecorded', 'simple']:
+            print("Usage: python convert_to_rlds.py [numbered|autorecorded|simple]")
             print("  No argument: converts all episodes")
             print("  numbered: converts only numbered episodes")
             print("  autorecorded: converts only autorecorded episodes")
+            print("  simple: converts only simple trace episodes")
             sys.exit(1)
         dataset_type = sys.argv[1]
     
@@ -263,6 +264,9 @@ def main():
     if dataset_type == 'all':
         source_dir = base_dir / 'data' / 'processed' / 'traces_matched_to_images_all'
         output_dir = base_dir / 'data' / 'processed' / 'rlds' / 'rlds_dataset'
+    elif dataset_type == 'simple':
+        source_dir = base_dir / 'data' / 'processed' / 'traces_matched_to_images_simple'
+        output_dir = base_dir / 'data' / 'processed' / 'rlds' / 'rlds_dataset_simple'
     else:
         source_dir = base_dir / 'data' / 'processed' / f'traces_matched_to_images_{dataset_type}'
         output_dir = base_dir / 'data' / 'processed' / 'rlds' / f'rlds_dataset_{dataset_type}'

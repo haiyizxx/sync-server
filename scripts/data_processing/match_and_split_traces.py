@@ -131,8 +131,10 @@ def distribute_images_to_trace(trace_data: dict, image_timestamps: Dict[int, str
 
 
 def classify_episode(episode_name: str) -> str:
-    """Classify episode as 'numbered', 'autorecorded', or 'unknown'."""
-    if episode_name.isdigit() and len(episode_name) <= 3:
+    """Classify episode as 'numbered', 'autorecorded', 'simple', or 'unknown'."""
+    if episode_name.startswith('simple_trace_'):
+        return 'simple'
+    elif episode_name.isdigit() and len(episode_name) <= 3:
         return 'numbered'
     elif episode_name.startswith('2025') or episode_name.startswith('2024'):
         return 'autorecorded'
@@ -155,8 +157,9 @@ def process_all_episodes():
     all_dir = base_dir / 'data' / 'processed' / 'traces_matched_to_images_all'
     numbered_dir = base_dir / 'data' / 'processed' / 'traces_matched_to_images_numbered'
     auto_dir = base_dir / 'data' / 'processed' / 'traces_matched_to_images_autorecorded'
+    simple_dir = base_dir / 'data' / 'processed' / 'traces_matched_to_images_simple'
     
-    for dir_path in [all_dir, numbered_dir, auto_dir]:
+    for dir_path in [all_dir, numbered_dir, auto_dir, simple_dir]:
         dir_path.mkdir(exist_ok=True, parents=True)
     
     # Get all trace files
@@ -173,6 +176,7 @@ def process_all_episodes():
     stats = {
         'numbered': {'count': 0, 'matched': 0, 'total_steps': 0},
         'autorecorded': {'count': 0, 'matched': 0, 'total_steps': 0},
+        'simple': {'count': 0, 'matched': 0, 'total_steps': 0},
         'unknown': {'count': 0, 'matched': 0, 'total_steps': 0}
     }
     
@@ -191,7 +195,25 @@ def process_all_episodes():
             print(f"❌ Error reading trace file: {e}")
             continue
         
-        # Determine image directory based on episode type
+        # Handle simple traces - they're already complete, just copy them
+        if episode_type == 'simple':
+            # Simple traces already have everything - just copy to output directories
+            with open(all_dir / f"{episode_name}.json", 'w') as f:
+                json.dump(trace_data, f, indent=2)
+            with open(simple_dir / f"{episode_name}.json", 'w') as f:
+                json.dump(trace_data, f, indent=2)
+            
+            # Update stats
+            stats['simple']['count'] += 1
+            if 'trace' in trace_data:
+                steps = len(trace_data['trace'])
+                stats['simple']['total_steps'] += steps
+                stats['simple']['matched'] += steps  # All steps have images
+            
+            print(f"✅ Copied simple trace: {episode_name}")
+            continue
+        
+        # Determine image directory for numbered/autorecorded episodes
         if episode_type == 'numbered':
             images_dir = base_dir / 'data' / 'raw' / 'images' / episode_name
         elif episode_type == 'autorecorded':
@@ -265,14 +287,14 @@ def process_all_episodes():
         print(f"Saved to: {output_file} and {type_output}")
     
     # Create metadata files
-    create_metadata_files(numbered_dir, auto_dir, stats)
+    create_metadata_files(numbered_dir, auto_dir, simple_dir, stats)
     
     # Print summary
     print(f"\n{'='*60}")
     print("SUMMARY")
     print(f"{'='*60}")
     
-    for episode_type in ['numbered', 'autorecorded', 'unknown']:
+    for episode_type in ['numbered', 'autorecorded', 'simple', 'unknown']:
         s = stats[episode_type]
         if s['count'] > 0:
             print(f"\n{episode_type.capitalize()} episodes:")
@@ -294,7 +316,7 @@ def process_all_episodes():
         print(f"  Overall match rate: {total_matched/total_steps*100:.1f}%")
 
 
-def create_metadata_files(numbered_dir: Path, auto_dir: Path, stats: dict):
+def create_metadata_files(numbered_dir: Path, auto_dir: Path, simple_dir: Path, stats: dict):
     """Create metadata files for each dataset type."""
     
     # Numbered episodes metadata
@@ -334,7 +356,24 @@ def create_metadata_files(numbered_dir: Path, auto_dir: Path, stats: dict):
     with open(auto_dir / "dataset_metadata.json", 'w') as f:
         json.dump(auto_meta, f, indent=2)
     
-    print("\n✅ Created metadata files for both dataset types")
+    # Simple trace episodes metadata
+    simple_meta = {
+        "dataset_type": "simple_trace_episodes",
+        "description": "Simple robot demonstrations with gripper control tasks",
+        "episodes": stats['simple']['count'],
+        "total_steps": stats['simple']['total_steps'],
+        "matched_steps": stats['simple']['matched'],
+        "match_rate": 100.0,  # Simple traces always have images
+        "language_instructions": [
+            "You are a myCobot 280 robotic arm, open your gripper gradually",
+            "You are a myCobot 280 robotic arm, close your gripper gradually"
+        ]
+    }
+    
+    with open(simple_dir / "dataset_metadata.json", 'w') as f:
+        json.dump(simple_meta, f, indent=2)
+    
+    print("\n✅ Created metadata files for all dataset types")
 
 
 if __name__ == "__main__":

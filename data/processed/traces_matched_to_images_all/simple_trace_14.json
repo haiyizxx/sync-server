@@ -1,0 +1,521 @@
+{
+  "metadata": {
+    "recording_frequency_hz": 3,
+    "total_points": 21,
+    "duration_seconds": 6.67,
+    "start_timestamp_ms": 1721924045000,
+    "end_timestamp_ms": 1721924051670,
+    "task_success": true,
+    "task_name": "simple_trace_11",
+    "description": "You are a myCobot 280 robotic arm, close your gripper gradually",
+    "objects_involved": [],
+    "expected_duration_seconds": 6.67,
+    "robot_model": "myCobot 280"
+  },
+  "trace": [
+    {
+      "timestamp_ms": 1721924045000,
+      "relative_timestamp": 0.0,
+      "angles": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "coords": [
+        48.3,
+        -63.5,
+        419.5,
+        -91.58,
+        -0.15,
+        -90.08
+      ],
+      "gripper_value": 100,
+      "is_moving": 0,
+      "is_powered_on": true,
+      "image": "gripper_100.jpg"
+    },
+    {
+      "timestamp_ms": 1721924045333,
+      "relative_timestamp": 0.333,
+      "angles": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "coords": [
+        48.3,
+        -63.5,
+        419.5,
+        -91.58,
+        -0.15,
+        -90.08
+      ],
+      "gripper_value": 95,
+      "is_moving": 0,
+      "is_powered_on": true,
+      "image": "gripper_95.jpg"
+    },
+    {
+      "timestamp_ms": 1721924045667,
+      "relative_timestamp": 0.667,
+      "angles": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "coords": [
+        48.3,
+        -63.5,
+        419.5,
+        -91.58,
+        -0.15,
+        -90.08
+      ],
+      "gripper_value": 90,
+      "is_moving": 0,
+      "is_powered_on": true,
+      "image": "gripper_90.jpg"
+    },
+    {
+      "timestamp_ms": 1721924046000,
+      "relative_timestamp": 1.0,
+      "angles": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "coords": [
+        48.3,
+        -63.5,
+        419.5,
+        -91.58,
+        -0.15,
+        -90.08
+      ],
+      "gripper_value": 85,
+      "is_moving": 0,
+      "is_powered_on": true,
+      "image": "gripper_85.jpg"
+    },
+    {
+      "timestamp_ms": 1721924046333,
+      "relative_timestamp": 1.333,
+      "angles": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "coords": [
+        48.3,
+        -63.5,
+        419.5,
+        -91.58,
+        -0.15,
+        -90.08
+      ],
+      "gripper_value": 80,
+      "is_moving": 0,
+      "is_powered_on": true,
+      "image": "gripper_80.jpg"
+    },
+    {
+      "timestamp_ms": 1721924046667,
+      "relative_timestamp": 1.667,
+      "angles": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "coords": [
+        48.3,
+        -63.5,
+        419.5,
+        -91.58,
+        -0.15,
+        -90.08
+      ],
+      "gripper_value": 75,
+      "is_moving": 0,
+      "is_powered_on": true,
+      "image": "gripper_75.jpg"
+    },
+    {
+      "timestamp_ms": 1721924047000,
+      "relative_timestamp": 2.0,
+      "angles": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "coords": [
+        48.3,
+        -63.5,
+        419.5,
+        -91.58,
+        -0.15,
+        -90.08
+      ],
+      "gripper_value": 70,
+      "is_moving": 0,
+      "is_powered_on": true,
+      "image": "gripper_70.jpg"
+    },
+    {
+      "timestamp_ms": 1721924047333,
+      "relative_timestamp": 2.333,
+      "angles": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "coords": [
+        48.3,
+        -63.5,
+        419.5,
+        -91.58,
+        -0.15,
+        -90.08
+      ],
+      "gripper_value": 65,
+      "is_moving": 0,
+      "is_powered_on": true,
+      "image": "gripper_65.jpg"
+    },
+    {
+      "timestamp_ms": 1721924047667,
+      "relative_timestamp": 2.667,
+      "angles": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "coords": [
+        48.3,
+        -63.5,
+        419.5,
+        -91.58,
+        -0.15,
+        -90.08
+      ],
+      "gripper_value": 60,
+      "is_moving": 0,
+      "is_powered_on": true,
+      "image": "gripper_60.jpg"
+    },
+    {
+      "timestamp_ms": 1721924048000,
+      "relative_timestamp": 3.0,
+      "angles": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "coords": [
+        48.3,
+        -63.5,
+        419.5,
+        -91.58,
+        -0.15,
+        -90.08
+      ],
+      "gripper_value": 55,
+      "is_moving": 0,
+      "is_powered_on": true,
+      "image": "gripper_55.jpg"
+    },
+    {
+      "timestamp_ms": 1721924048333,
+      "relative_timestamp": 3.333,
+      "angles": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "coords": [
+        48.3,
+        -63.5,
+        419.5,
+        -91.58,
+        -0.15,
+        -90.08
+      ],
+      "gripper_value": 50,
+      "is_moving": 0,
+      "is_powered_on": true,
+      "image": "gripper_50.jpg"
+    },
+    {
+      "timestamp_ms": 1721924048667,
+      "relative_timestamp": 3.667,
+      "angles": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "coords": [
+        48.3,
+        -63.5,
+        419.5,
+        -91.58,
+        -0.15,
+        -90.08
+      ],
+      "gripper_value": 45,
+      "is_moving": 0,
+      "is_powered_on": true,
+      "image": "gripper_45.jpg"
+    },
+    {
+      "timestamp_ms": 1721924049000,
+      "relative_timestamp": 4.0,
+      "angles": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "coords": [
+        48.3,
+        -63.5,
+        419.5,
+        -91.58,
+        -0.15,
+        -90.08
+      ],
+      "gripper_value": 40,
+      "is_moving": 0,
+      "is_powered_on": true,
+      "image": "gripper_40.jpg"
+    },
+    {
+      "timestamp_ms": 1721924049333,
+      "relative_timestamp": 4.333,
+      "angles": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "coords": [
+        48.3,
+        -63.5,
+        419.5,
+        -91.58,
+        -0.15,
+        -90.08
+      ],
+      "gripper_value": 35,
+      "is_moving": 0,
+      "is_powered_on": true,
+      "image": "gripper_35.jpg"
+    },
+    {
+      "timestamp_ms": 1721924049667,
+      "relative_timestamp": 4.667,
+      "angles": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "coords": [
+        48.3,
+        -63.5,
+        419.5,
+        -91.58,
+        -0.15,
+        -90.08
+      ],
+      "gripper_value": 30,
+      "is_moving": 0,
+      "is_powered_on": true,
+      "image": "gripper_30.jpg"
+    },
+    {
+      "timestamp_ms": 1721924050000,
+      "relative_timestamp": 5.0,
+      "angles": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "coords": [
+        48.3,
+        -63.5,
+        419.5,
+        -91.58,
+        -0.15,
+        -90.08
+      ],
+      "gripper_value": 25,
+      "is_moving": 0,
+      "is_powered_on": true,
+      "image": "gripper_25.jpg"
+    },
+    {
+      "timestamp_ms": 1721924050333,
+      "relative_timestamp": 5.333,
+      "angles": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "coords": [
+        48.3,
+        -63.5,
+        419.5,
+        -91.58,
+        -0.15,
+        -90.08
+      ],
+      "gripper_value": 20,
+      "is_moving": 0,
+      "is_powered_on": true,
+      "image": "gripper_20.jpg"
+    },
+    {
+      "timestamp_ms": 1721924050667,
+      "relative_timestamp": 5.667,
+      "angles": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "coords": [
+        48.3,
+        -63.5,
+        419.5,
+        -91.58,
+        -0.15,
+        -90.08
+      ],
+      "gripper_value": 15,
+      "is_moving": 0,
+      "is_powered_on": true,
+      "image": "gripper_15.jpg"
+    },
+    {
+      "timestamp_ms": 1721924051000,
+      "relative_timestamp": 6.0,
+      "angles": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "coords": [
+        48.3,
+        -63.5,
+        419.5,
+        -91.58,
+        -0.15,
+        -90.08
+      ],
+      "gripper_value": 10,
+      "is_moving": 0,
+      "is_powered_on": true,
+      "image": "gripper_10.jpg"
+    },
+    {
+      "timestamp_ms": 1721924051333,
+      "relative_timestamp": 6.333,
+      "angles": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "coords": [
+        48.3,
+        -63.5,
+        419.5,
+        -91.58,
+        -0.15,
+        -90.08
+      ],
+      "gripper_value": 5,
+      "is_moving": 0,
+      "is_powered_on": true,
+      "image": "gripper_5.jpg"
+    },
+    {
+      "timestamp_ms": 1721924051670,
+      "relative_timestamp": 6.67,
+      "angles": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "coords": [
+        48.3,
+        -63.5,
+        419.5,
+        -91.58,
+        -0.15,
+        -90.08
+      ],
+      "gripper_value": 0,
+      "is_moving": 0,
+      "is_powered_on": true,
+      "image": "gripper_0.jpg"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "dataset_type": "simple_trace_episodes",
+  "description": "Simple robot demonstrations with gripper control tasks",
+  "episodes": 20,
+  "total_steps": 420,
+  "matched_steps": 420,
+  "match_rate": 100.0,
+  "language_instructions": [
+    "You are a myCobot 280 robotic arm, open your gripper gradually",
+    "You are a myCobot 280 robotic arm, close your gripper gradually"
+  ]
+}

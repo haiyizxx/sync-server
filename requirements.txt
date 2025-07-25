@@ -1,7 +1,15 @@
+# Core dependencies (versions from rlds_dataset environment)
+requests==2.32.4
+numpy==2.0.2
+matplotlib==3.9.4
+pillow==11.3.0
+
+# TensorFlow and datasets
+tensorflow==2.19.0
+tensorflow-datasets==4.9.3
+tensorflow-metadata==1.17.2
+
+# Web server and robot control (keep existing versions)
 flask==2.3.3
 flask-cors==4.0.0
-requests==2.31.0
-pymycobot==2.7.0 
-tensorflow-datasets>=4.9.0
-tensorflow>=2.12.0
-numpy>=1.21.0
+pymycobot==2.7.0
