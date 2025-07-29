@@ -147,10 +147,18 @@ class RLDSDatasetConverter(tfds.core.GeneratorBasedBuilder):
                             rpy_deltas = next_rpy - rpy_orient
                             cartesian_deltas = np.concatenate([xyz_deltas, rpy_deltas])
                     
-                    # Add gripper action (normalized to 0-1)
-                    gripper_action = np.array([self._normalize_gripper_value(float(step['gripper_value']))], dtype=np.float32)
+                    # Calculate gripper delta action
+                    current_gripper = self._normalize_gripper_value(float(step['gripper_value']))
+                    if step_idx < len(trace) - 1:
+                        next_gripper = self._normalize_gripper_value(float(trace[step_idx + 1]['gripper_value']))
+                        gripper_delta = next_gripper - current_gripper
+                    else:
+                        # Last step has zero gripper delta
+                        gripper_delta = 0.0
                     
-                    # Combined action: [cartesian_deltas(6), gripper(1)]
+                    gripper_action = np.array([gripper_delta], dtype=np.float32)
+                    
+                    # Combined action: [cartesian_deltas(6), gripper_delta(1)]
                     action = np.concatenate([cartesian_deltas, gripper_action])
                     
                     # Load actual image if available
