@@ -15,7 +15,7 @@
     {
       "filepathTemplate": "{DATASET}-{SPLIT}.{FILEFORMAT}-{SHARD_X_OF_Y}",
       "name": "train",
-      "numBytes": "8126048",
+      "numBytes": "10081832",
       "shardLengths": [
         "19"
       ]
@@ -23,7 +23,7 @@
     {
       "filepathTemplate": "{DATASET}-{SPLIT}.{FILEFORMAT}-{SHARD_X_OF_Y}",
       "name": "validation",
-      "numBytes": "427674",
+      "numBytes": "532460",
       "shardLengths": [
         "1"
       ]
