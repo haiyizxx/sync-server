@@ -16,6 +16,7 @@ from typing import Iterator, List, Optional
 from PIL import Image
 import sys
 
+ADDITIONAL_TERMINAL_STEPS = 5
 
 class RLDSDatasetConverter(tfds.core.GeneratorBasedBuilder):
     """DatasetBuilder for MyCobot robot demonstrations."""
@@ -196,6 +197,11 @@ class RLDSDatasetConverter(tfds.core.GeneratorBasedBuilder):
                         'task_success': metadata.get('task_success', True),
                         'task_name': metadata.get('task_name', 'unknown'),
                     }
+
+                    # Add additional terminal steps
+                    steps[-1]['is_last'] = False
+                    steps.extend(steps[-1].copy() for _ in range(ADDITIONAL_TERMINAL_STEPS))
+                    steps[-1]['is_last'] = True
                     
                     # Yield the complete episode
                     yield json_file.stem, {
